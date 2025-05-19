@@ -1160,12 +1160,12 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
 // In displayShoutouts.js
 // REPLACE your existing initializeHomepageContent function with THIS ENTIRE VERSION:
 
-// --- MASTER INITIALIZATION FUNCTION (Ensure it includes business info refresh) ---
+// --- MASTER INITIALIZATION FUNCTION ---
 async function initializeHomepageContent() {
-    console.log("Initializing homepage content (v_with_biz_refresh_FIXED_SCOPE)..."); // Your version log
+    console.log("Initializing homepage content (v_with_countdown_and_biz_refresh)...");
     const mainContentWrapper = document.getElementById('main-content-wrapper');
     const maintenanceOverlay = document.getElementById('maintenanceLoadingOverlay');
-    const countdownSection = document.querySelector('.countdown-section');
+    const countdownSection = document.querySelector('.countdown-section'); // For the main event countdown
     const usefulLinksSection = document.querySelector('.useful-links-section');
     const bodyElement = document.body;
     const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
@@ -1174,8 +1174,12 @@ async function initializeHomepageContent() {
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
 
+    // Ensure Firebase and necessary Firestore document references are initialized globally before this function runs
+    // (firebaseAppInitialized, db, profileDocRef, businessDocRef, etc.)
     if (!firebaseAppInitialized || !db || !profileDocRef) {
-        console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
+        console.error("Firebase not ready or key Firestore document references (e.g., profileDocRef) are missing. Site cannot load settings properly.");
+        // Optionally, display a user-facing error message on the page here
+        if (mainContentWrapper) mainContentWrapper.innerHTML = "<p class='error' style='text-align:center;padding:20px;'>Critical error: Could not initialize site settings.</p>";
         return;
     }
 
@@ -1184,7 +1188,7 @@ async function initializeHomepageContent() {
     let maintenanceTitle = "Site Under Maintenance";
     let maintenanceMessage = "We are currently performing scheduled maintenance. Please check back later for updates.";
     let hideTikTokSection = false;
-    let countdownTargetDate = null; 
+    let countdownTargetDate = null; // Will hold Firestore Timestamp or null
     let countdownTitle = null;
     let countdownExpiredMessage = null;
 
@@ -1197,6 +1201,7 @@ async function initializeHomepageContent() {
             maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle;
             maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage;
             hideTikTokSection = siteSettings.hideTikTokSection || false;
+            // Ensure countdownTargetDate is correctly handled as Firestore Timestamp or null
             countdownTargetDate = siteSettings.countdownTargetDate instanceof Timestamp ? siteSettings.countdownTargetDate : null;
             countdownTitle = siteSettings.countdownTitle;
             countdownExpiredMessage = siteSettings.countdownExpiredMessage;
@@ -1206,6 +1211,8 @@ async function initializeHomepageContent() {
         console.log("Settings fetched:", { maintenanceEnabled, hideTikTokSection, countdownSet: !!countdownTargetDate });
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
+        // Optionally, display a user-facing error message
+        if (mainContentWrapper) mainContentWrapper.innerHTML = "<p class='error' style='text-align:center;padding:20px;'>Error loading site configuration.</p>";
         return;
     }
 
@@ -1223,34 +1230,45 @@ async function initializeHomepageContent() {
         } else {
             console.error("Maintenance overlay element not found!");
         }
-        return; 
+        return; // Stop further content loading
     } else {
+        // Maintenance mode OFF
         console.log("Maintenance mode OFF.");
         if (mainContentWrapper) mainContentWrapper.style.display = '';
         if (maintenanceOverlay) maintenanceOverlay.style.display = 'none';
         bodyElement.classList.remove('maintenance-active');
         
+        // ** START EVENT COUNTDOWN LOGIC (Main site countdown) **
         if (countdownTargetDate && typeof startEventCountdown === 'function') {
-            if (countdownSection) countdownSection.style.display = 'block';
+            if (countdownSection) {
+                countdownSection.style.display = 'block'; // Make sure section is visible
+            } else {
+                console.warn("HTML element for '.countdown-section' not found.");
+            }
             startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
         } else {
-            if (countdownSection) countdownSection.style.display = 'none';
-            console.log("No valid countdown target date set, or startEventCountdown not found. Countdown section hidden/not started.");
+            if (countdownSection) {
+                countdownSection.style.display = 'none'; // Hide section if no target or function
+            }
+            if (!countdownTargetDate) console.log("No valid countdown target date set from Firestore. Main event countdown section hidden.");
+            if (typeof startEventCountdown !== 'function') console.warn("startEventCountdown function is not defined. Main event countdown will not run.");
         }
+        // ** END EVENT COUNTDOWN LOGIC **
 
         const oldMaintenanceMessageElement = document.getElementById('maintenanceModeMessage');
         if (oldMaintenanceMessageElement) oldMaintenanceMessageElement.style.display = 'none';
         if (usefulLinksSection) {
-            usefulLinksSection.style.display = 'block';
+            usefulLinksSection.style.display = 'block'; // Or your preferred display style
         }
 
+        // Handle TikTok Section Visibility
         let isTikTokVisible = false;
         if (!tiktokHeaderContainer || !tiktokGridContainer) {
-            console.warn("Could not find TikTok header/grid containers.");
+            console.warn("Could not find TikTok header or grid containers for visibility check.");
             if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
         } else {
             if (hideTikTokSection) {
-                console.log("Hiding TikTok section.");
+                console.log("Hiding TikTok section as per settings.");
                 tiktokHeaderContainer.style.display = 'none';
                 tiktokGridContainer.style.display = 'none';
                 if (tiktokUnavailableMessage) {
@@ -1260,50 +1278,53 @@ async function initializeHomepageContent() {
                 isTikTokVisible = false;
             } else {
                 console.log("Showing TikTok section.");
-                tiktokHeaderContainer.style.display = '';
-                tiktokGridContainer.style.display = '';
+                tiktokHeaderContainer.style.display = ''; // Default display
+                tiktokGridContainer.style.display = ''; // Default display
                 if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
                 isTikTokVisible = true;
             }
         }
 
-        console.log("Initiating loading of content sections...");
+        console.log("Initiating loading of other content sections...");
 
-       // ---- INITIAL BUSINESS INFO LOAD + PERIODIC REFRESH SETUP ----
-            if (firebaseAppInitialized && typeof displayBusinessInfo === 'function' && db && businessDocRef) {
-                await displayBusinessInfo(); 
+        // ---- INITIAL BUSINESS INFO LOAD + PERIODIC REFRESH SETUP ----
+        // businessDocRef should be globally defined after Firebase init
+        if (firebaseAppInitialized && typeof displayBusinessInfo === 'function' && db && businessDocRef) {
+            await displayBusinessInfo(); // Initial load
 
-                if (window.businessInfoRefreshInterval) { 
-                    clearInterval(window.businessInfoRefreshInterval);
-                }
-                window.businessInfoRefreshInterval = setInterval(async () => {
-                    if (document.hidden) return; 
-                    await displayBusinessInfo(); 
-                }, 60000); 
-                console.log("Business info display and periodic refresh initiated.");
-            } else {
-            console.error("Business info cannot be loaded/refreshed: Firebase not init, displayBusinessInfo missing, or businessDocRef missing.");
-            const biContainer = document.getElementById('business-status-display');
+            if (window.businessInfoRefreshInterval) { // Clear any old interval
+                clearInterval(window.businessInfoRefreshInterval);
+            }
+            window.businessInfoRefreshInterval = setInterval(async () => {
+                if (document.hidden) return; // Don't update if tab is not visible
+                // console.log("Periodically refreshing business info..."); // For debugging
+                await displayBusinessInfo(); // Re-fetch data and update display
+            }, 60000); // Refresh every 60 seconds
+            console.log("Business info display and periodic refresh initiated.");
+        } else {
+            console.error("Business info cannot be loaded/refreshed. Checks: firebaseAppInitialized, displayBusinessInfo function, db, businessDocRef.");
+            const biContainer = document.getElementById('business-status-display'); // Ensure this ID exists in index.html
             const statusMainTextElLocal = biContainer ? biContainer.querySelector('.status-main-text') : null;
             if(statusMainTextElLocal) {
                  statusMainTextElLocal.textContent = "Info Unavailable";
-                 statusMainTextElLocal.className = 'status-main-text status-unavailable';
-            } else if (biContainer) {
+                 statusMainTextElLocal.className = 'status-main-text status-unavailable'; // Ensure CSS class is also set
+            } else if (biContainer) { // Fallback if specific span isn't found
                 biContainer.innerHTML = "<span class='status-unavailable'>Business info could not be loaded.</span>";
             }
         }
         // ---- END BUSINESS INFO LOAD + REFRESH SETUP ----
 
+        // Define all other content loading promises
         const loadPromises = [
-            (typeof displayProfileData === 'function' ? displayProfileData(siteSettings) : Promise.resolve(console.warn("displayProfileData not defined"))),
-            (typeof displayPresidentData === 'function' ? displayPresidentData() : Promise.resolve(console.warn("displayPresidentData not defined"))),
+            (typeof displayProfileData === 'function' ? displayProfileData(siteSettings) : Promise.resolve(console.warn("displayProfileData function not defined"))),
+            (typeof displayPresidentData === 'function' ? displayPresidentData() : Promise.resolve(console.warn("displayPresidentData function not defined"))),
             (typeof loadShoutoutPlatformData === 'function' && instagramGridContainer ? loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')) : Promise.resolve(console.warn("loadShoutoutPlatformData for Instagram not defined or grid missing"))),
             (typeof loadShoutoutPlatformData === 'function' && youtubeGridContainer ? loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')) : Promise.resolve(console.warn("loadShoutoutPlatformData for YouTube not defined or grid missing"))),
-            (typeof loadAndDisplayUsefulLinks === 'function' ? loadAndDisplayUsefulLinks() : Promise.resolve(console.warn("loadAndDisplayUsefulLinks not defined"))),
-            (typeof loadAndDisplaySocialLinks === 'function' ? loadAndDisplaySocialLinks() : Promise.resolve(console.warn("loadAndDisplaySocialLinks not defined"))),
-            (typeof loadAndDisplayDisabilities === 'function' ? loadAndDisplayDisabilities() : Promise.resolve(console.warn("loadAndDisplayDisabilities not defined"))),
-            (typeof loadAndDisplayTechItems === 'function' ? loadAndDisplayTechItems() : Promise.resolve(console.warn("loadAndDisplayTechItems not defined"))),
-            (typeof loadAndDisplayFaqs === 'function' ? loadAndDisplayFaqs() : Promise.resolve(console.warn("loadAndDisplayFaqs not defined")))
+            (typeof loadAndDisplayUsefulLinks === 'function' ? loadAndDisplayUsefulLinks() : Promise.resolve(console.warn("loadAndDisplayUsefulLinks function not defined"))),
+            (typeof loadAndDisplaySocialLinks === 'function' ? loadAndDisplaySocialLinks() : Promise.resolve(console.warn("loadAndDisplaySocialLinks function not defined"))),
+            (typeof loadAndDisplayDisabilities === 'function' ? loadAndDisplayDisabilities() : Promise.resolve(console.warn("loadAndDisplayDisabilities function not defined"))),
+            (typeof loadAndDisplayTechItems === 'function' ? loadAndDisplayTechItems() : Promise.resolve(console.warn("loadAndDisplayTechItems function not defined"))),
+            (typeof loadAndDisplayFaqs === 'function' ? loadAndDisplayFaqs() : Promise.resolve(console.warn("loadAndDisplayFaqs function not defined")))
         ];
 
         if (isTikTokVisible && tiktokGridContainer && typeof loadShoutoutPlatformData === 'function') {
@@ -1313,14 +1334,16 @@ async function initializeHomepageContent() {
             } else {
                 console.warn("Could not load TikTok section - timestamp element missing.");
             }
-        } else if (isTikTokVisible) {
-            console.warn("loadShoutoutPlatformData for TikTok not defined, or tiktokGridContainer missing");
+        } else if (isTikTokVisible) { // TikTok was meant to be visible but function or container was missing
+            console.warn("TikTok section was intended to be visible but loadShoutoutPlatformData is not defined or tiktokGridContainer is missing.");
         }
 
+        // Await all other promises (excluding business info which is handled above)
         const results = await Promise.allSettled(loadPromises);
         results.forEach((result, index) => {
             if (result.status === 'rejected') {
-                console.error(`Error loading a content section (index ${index}):`, result.reason);
+                // For better debugging, you could map indices to promise descriptions
+                console.error(`Error loading a content section (promise index ${index}):`, result.reason);
             }
         });
         console.log("All other dynamic content loading initiated/completed.");
