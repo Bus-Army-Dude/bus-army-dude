@@ -124,7 +124,7 @@ function renderYouTubeCard(account) {
 
     if (usernameFromDb !== 'N/A' && usernameFromDb.trim() !== '' && usernameFromDb.trim() !== '@') {
         displayHandle = usernameFromDb.startsWith('@') ? usernameFromDb : `@${usernameFromDb}`;
-        channelUrl = `https://www.youtube.com/$${displayHandle}`; 
+        channelUrl = `https://www.youtube.com/${displayHandle}`; 
     } else {
         displayHandle = ''; 
     }
