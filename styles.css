@@ -121,6 +121,9 @@ body {
     border: 3px solid var(--link-color);
     position: relative;
     box-shadow: 0 4px 15px var(--shadow-color);
+    /* --- ADD THIS LINE --- */
+    object-fit: cover;
+    /* --------------------- */
 }
 
 /* Profile Status Container */
