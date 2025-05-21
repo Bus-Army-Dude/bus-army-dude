@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    // Apply detections to DOM elements
+    // Apply detections to DOM elements when the page loads
     document.getElementById("device-info").textContent = detectDevice();
     detectOSAndVersion(); // This function will update "os-info"
     getDetailedDeviceModel(); // This function will update "model-info"
