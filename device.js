@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // --- Apple Mobile Devices ---
         if (!window.MSStream) {
+            // iPadOS detection must come before macOS
             if (/iPad/i.test(userAgent)) {
                 os = "iPadOS";
                 const osMatch = userAgent.match(/OS (\d+([_.]\d+)*)/i);
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 osVersion = androidMatch[1];
             }
         }
-        // --- macOS ---
+        // --- macOS --- (Now comes after iPadOS/iOS)
         else if (os === "Unknown OS" && /Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent)) {
             os = "macOS";
             const macOSMatch = userAgent.match(/Mac OS X (\d+([_.]\d+)*)/i);
@@ -129,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function detectDevice() {
         let userAgent = navigator.userAgent;
 
+        // Ensure iPad detection is prioritized here too
         if (/iPad/i.test(userAgent)) {
             return "iPad";
         } else if (/iPhone/i.test(userAgent)) {
