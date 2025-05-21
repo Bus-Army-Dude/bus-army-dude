@@ -81,11 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
             dateTimeSectionElement.textContent = formattedDateTime;
         }
 
-        // Update version info simpler time without weekday & timezone
+        // Update version info simpler time with full date and timezone
         const versionTimeElement = document.querySelector('.version-info-section .update-time');
         if (versionTimeElement) {
-            const simpleTime = `${month} ${day}, ${year} ${hoursStr}:${minutesStr}:${secondsStr} ${ampm}`;
-            versionTimeElement.textContent = ` ${simpleTime}`;
+            // Use the already formatted string that includes everything
+            versionTimeElement.textContent = ` ${formattedDateTime}`;
         }
     }
 
