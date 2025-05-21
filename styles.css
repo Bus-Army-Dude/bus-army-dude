@@ -212,28 +212,6 @@ body {
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
-/* Weather Button */
-.weather-button {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('weather-icon.png') center/18px no-repeat, var(--link-color);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
-}
-
-.weather-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
-}
-
 /* Media Queries */
 @media screen and (max-width: 768px) {
     .profile-pic {
@@ -242,8 +220,7 @@ body {
     }
 
     .settings-button,
-    .merch-button,
-    .weather-button {
+    .merch-button {
         width: 35px;
         height: 35px;
     }
@@ -260,8 +237,7 @@ body {
     }
 
     .settings-button,
-    .merch-button,
-    .weather-button {
+    .merch-button, {
         width: 30px;
         height: 30px;
     }
