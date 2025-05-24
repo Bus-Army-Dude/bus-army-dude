@@ -1110,34 +1110,77 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         }
     }
 
-    // --- HOLIDAY HOURS DISPLAY --- (Keep your existing logic, or adapt list item countdowns similarly if needed)
-    if (localHolidayHoursDisplay) {
+        // --- HOLIDAY HOURS DISPLAY --- (Keep your existing logic, or adapt list item countdowns similarly if needed)
+        if (localHolidayHoursDisplay) {
         const upcomingHolidayHours = (holidayHours || [])
             .filter(h => h.date && DateTime.fromISO(h.date, { zone: assumedBusinessTimezone }).endOf('day') >= nowInBizTZLuxon.startOf('day'))
             .sort((a, b) => (DateTime.fromISO(a.date) > DateTime.fromISO(b.date) ? 1 : -1));
-
+    
         if (upcomingHolidayHours.length > 0) {
             localHolidayHoursDisplay.className = 'special-hours-list';
             let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
+            
             upcomingHolidayHours.forEach(holiday => {
-                let holidayItemCountdownStr = ""; 
+                let holidayItemCountdownStr = "";
+                const holidayStartLuxonDate = DateTime.fromISO(holiday.date, { zone: assumedBusinessTimezone }).startOf('day');
+                const startOfTodayInBiz = nowInBizTZLuxon.startOf('day');
+                
                 if (holiday.date === businessDateStr) {
-                    if(finalActiveRule && finalActiveRule.type === 'holiday' && finalActiveRule.date === holiday.date) {
-                       holidayItemCountdownStr = statusCountdownTextEl.textContent || (finalCurrentStatus === "Open" ? "Currently Open" : "Currently Closed");
-                    } else { 
-                        holidayItemCountdownStr = holiday.isClosed ? "Closed Today (Holiday)" : "Special Holiday Hours Today";
+                    // Today's holiday
+                    if (holiday.isClosed) {
+                        holidayItemCountdownStr = "Closed Today (Holiday)";
+                    } else if (holiday.open && holiday.close) {
+                        const holidayOpenMinutesNum = timeStringToMinutes(holiday.open);
+                        if (holidayOpenMinutesNum !== null) {
+                            const holidayOpenTimeToday = formatDisplayTimeBI(holiday.open, visitorTimezone);
+                            const currentMinutes = nowInBizTZLuxon.hour * 60 + nowInBizTZLuxon.minute;
+                            
+                            if (holidayOpenMinutesNum > currentMinutes) {
+                                holidayItemCountdownStr = `Today at ${holidayOpenTimeToday}`;
+                            } else {
+                                holidayItemCountdownStr = `Active Today until ${formatDisplayTimeBI(holiday.close, visitorTimezone)}`;
+                            }
+                        }
+                    }
+                } else {
+                    // Check if it's tomorrow or future date
+                    const diffInCalendarDays = Math.ceil(holidayStartLuxonDate.diff(startOfTodayInBiz, 'days').days);
+                    
+                    if (diffInCalendarDays === 1) {
+                        // Tomorrow's holiday
+                        if (holiday.isClosed) {
+                            holidayItemCountdownStr = "Closed Tomorrow";
+                        } else if (holiday.open) {
+                            holidayItemCountdownStr = `Tomorrow at ${formatDisplayTimeBI(holiday.open, visitorTimezone)}`;
+                        }
+                    } else if (diffInCalendarDays > 1) {
+                        // Future holiday
+                        if (diffInCalendarDays <= 7) {
+                            // If within a week, show the day name
+                            const futureDate = holidayStartLuxonDate.toFormat('cccc');
+                            holidayItemCountdownStr = `Upcoming on ${futureDate} (in ${diffInCalendarDays} days)`;
+                        } else {
+                            holidayItemCountdownStr = `Upcoming in ${diffInCalendarDays} days`;
+                        }
+                        
+                        if (!holiday.isClosed && holiday.open) {
+                            holidayItemCountdownStr += ` at ${formatDisplayTimeBI(holiday.open, visitorTimezone)}`;
+                        }
                     }
                 }
+    
                 holidayHoursHtml += `
                     <li>
                         <div class="hours-container">
                             <strong>${holiday.label || 'Holiday'}</strong>
-                            <span class="hours">${holiday.isClosed ? 'Closed' : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`}</span>
+                            <span class="hours">${holiday.isClosed ? 'Closed' : 
+                                `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`}</span>
                         </div>
                         <span class="dates">${formatDate(holiday.date)}</span>
                         <div class="holiday-status-countdown-text">${holidayItemCountdownStr}</div>
                     </li>`;
             });
+            
             holidayHoursHtml += '</ul>';
             localHolidayHoursDisplay.innerHTML = holidayHoursHtml;
             localHolidayHoursDisplay.style.display = '';
