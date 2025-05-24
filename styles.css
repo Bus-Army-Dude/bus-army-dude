@@ -945,11 +945,13 @@ body {
 }
 
 .youtube-cover-photo {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 12px;
-    display: block;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  object-fit: contain;
+  background-color: transparent;
+  margin-bottom: 16px; /* creates space below the cover photo */
 }
 
 /* YouTube Creator Info Container */
