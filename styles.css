@@ -2427,14 +2427,29 @@ body.maintenance-active {
     text-align: center;
 }
 
+/* Contact email link as pill-shaped button */
 .contact-info a {
-    color: var(--link-color);
+    display: inline-block;
+    padding: 10px 24px;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border-radius: 9999px;
     text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    user-select: none;
+    cursor: pointer;
 }
 
+/* Hover/focus for pill button */
 .contact-info a:hover,
 .contact-info a:focus {
-    text-decoration: underline;
+    background-color: var(--accent-hover-color, #1e90ff);
+    color: var(--bg-color);
+    outline: none;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    text-decoration: none;
 }
 
 /* ======================================== */
@@ -2561,97 +2576,8 @@ body.maintenance-active {
 
 .preview-content {
     margin-top: 15px;
-}
-
-#admin-preview-status {
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    font-weight: 500;
-}
-
-#admin-preview-hours ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 15px 0;
-}
-
-#admin-preview-hours li {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-color);
-}
-
-#admin-preview-hours li:last-child {
-    border-bottom: none;
-}
-
-#admin-preview-hours li strong {
-    font-weight: 600;
-}
-
-#admin-preview-hours li span {
+    font-size: 0.9em;
     color: var(--text-color);
 }
 
-/* ======================================== */
-/* == Transitions & UX Enhancements == */
-/* ======================================== */
-
-.status-main-text {
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.status-main-text.status-open,
-.status-main-text.status-closed,
-.status-main-text.status-unavailable {
-    transform: scale(1.02);
-}
-
-/* Mobile tweaks */
-@media (max-width: 480px) {
-    .hours-list li {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .hours-list li strong {
-        flex-basis: auto;
-        margin-bottom: 4px;
-    }
-}
-
-/* Highlight current day more dramatically */
-.hours-list li.current-day {
-    border-left: 4px solid var(--accent-color);
-    background: rgba(var(--accent-rgb), 0.15);
-}
-
-/* Admin UX: Closed days disabled style */
-.day-hours-group.closed {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-/* ================================ */
-/* == Remove all hover effects except contact email == */
-/* ================================ */
-
-.hours-list li:hover,
-.special-hours-display li:hover,
-.day-hours-group:hover,
-.special-hours-list .hour-entry:hover {
-    box-shadow: none !important;
-    background: inherit !important;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-}
-
-/* Keep hover on contact links */
-.contact-info a:hover,
-.contact-info a:focus {
-    text-decoration: underline;
-    border-bottom-color: var(--accent-color);
-    color: var(--accent-color);
-    outline: none;
-}
+/* No hover effects elsewhere! */
