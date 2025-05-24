@@ -2230,20 +2230,16 @@ body.maintenance-active {
 /* == Business Info Section Styles (Updated) == */
 /* ======================================== */
 
-/* Main container for business info (assuming you have this from original CSS) */
+/* Main container for business info */
 .business-info-section {
     background: var(--content-bg);
     padding: 25px;
     border-radius: 16px;
-    margin: 30px 0; /* Adjust horizontal margin to 0 if it's meant to be full bleed within its parent. 
-                       If its parent (.container) handles centering, 'auto' might still be okay,
-                       but '0' is more explicit for full width behavior of the section itself. */
+    margin: 30px 0;
     box-shadow: 0 3px 12px var(--shadow-color);
-    /* REMOVE or COMMENT OUT max-width to allow it to be full-width: */
-    /* max-width: 700px; */ 
-    /* Alternatively, if you want it to explicitly be 100% of its parent: */
-    width: 100%; 
-    box-sizing: border-box; /* Good practice when using padding and width: 100% */
+    /* Removed max-width for full width */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .business-info-section h2 {
@@ -2265,10 +2261,10 @@ body.maintenance-active {
     text-align: center;
 }
 
-.status-main-text { /* For "Currently Open", "Currently Closed" */
+.status-main-text {
     display: block;
-    font-weight: 600; /* Bolder */
-    font-size: 1.1em; /* Slightly larger */
+    font-weight: 600;
+    font-size: 1.1em;
     margin-bottom: 4px;
 }
 
@@ -2276,15 +2272,15 @@ body.maintenance-active {
 .status-main-text.status-closed { color: #ff3b30; }
 .status-main-text.status-unavailable { color: #ff9500; }
 
-.status-countdown-text { /* For "Closes in X min", "Opens in Y hours" */
+.status-countdown-text {
     display: block;
     font-size: 0.9em;
     color: var(--secondary-text);
     margin-top: 5px;
-    font-style: normal; /* Changed from italic for better readability perhaps */
+    font-style: normal;
 }
 
-.status-reason-text { /* For "(Regular Hours)", "(Manual Override)" */
+.status-reason-text {
     display: block;
     font-size: 0.8em;
     color: var(--secondary-text);
@@ -2307,9 +2303,9 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 9px 0; /* Slightly increased padding */
+    padding: 9px 0;
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.95em; /* Slightly increased size */
+    font-size: 0.95em;
 }
 
 .hours-list li:last-child {
@@ -2317,24 +2313,25 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-    flex-basis: 130px; /* Consistent width for day */
+    flex-basis: 130px;
     flex-shrink: 0;
     margin-right: 10px;
     font-weight: 500;
 }
 
-.hours-list li span { /* For the time string */
-    color: var(--text-color); /* Use primary text color for better visibility */
+.hours-list li span {
+    color: var(--text-color);
     text-align: right;
 }
 
-.hours-list li.current-day { /* Highlight for visitor's current day */
+.hours-list li.current-day {
     background: rgba(var(--accent-rgb), 0.1);
     font-weight: 600;
-    margin: -5px -10px; /* Pop-out effect */
-    padding: 9px 10px;   /* Adjust padding to match pop-out */
+    margin: -5px -10px;
+    padding: 9px 10px;
     border-radius: 8px;
 }
+
 .hours-list li.current-day strong,
 .hours-list li.current-day span {
     color: var(--accent-color);
@@ -2355,13 +2352,12 @@ body.maintenance-active {
     padding-top: 15px;
     border-top: 1px solid var(--border-color);
 }
-/* JavaScript will add this class if there's content */
-.special-hours-list { 
-    /* This class might already exist, ensure it matches your needs */
+
+.special-hours-list {
+    /* Ensure it matches your needs */
 }
 
-
-#temporary-hours-display:not(:empty) h4, /* Show h4 only if there's content */
+#temporary-hours-display:not(:empty) h4,
 #holiday-hours-display:not(:empty) h4 {
     font-size: 1.1em;
     margin-top: 0;
@@ -2370,15 +2366,14 @@ body.maintenance-active {
     font-weight: 600;
 }
 
-
-.special-hours-display { /* This is the UL inside the divs above */
+.special-hours-display {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .special-hours-display li {
-    background: rgba(var(--accent-rgb), 0.05); /* Subtle background for special items */
+    background: rgba(var(--accent-rgb), 0.05);
     padding: 12px 15px;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -2393,17 +2388,17 @@ body.maintenance-active {
     margin-bottom: 5px;
 }
 
-.special-hours-display li strong { /* Label like "Staff Training", "Christmas Day" */
+.special-hours-display li strong {
     font-weight: 600;
     color: var(--text-color);
 }
 
-.special-hours-display li .hours { /* The "Open HH:MM - HH:MM" or "Closed" text */
+.special-hours-display li .hours {
     font-weight: 500;
     color: var(--text-color);
 }
 
-.special-hours-display li .dates { /* The date or date range */
+.special-hours-display li .dates {
     display: block;
     font-size: 0.9em;
     color: var(--secondary-text);
@@ -2415,11 +2410,11 @@ body.maintenance-active {
 .special-hours-display li .holiday-status-countdown-text {
     display: block;
     font-size: 0.85em;
-    color: var(--accent-color); /* Make countdowns stand out a bit */
+    color: var(--accent-color);
     margin-top: 8px;
     padding-top: 6px;
-    border-top: 1px dashed rgba(var(--accent-rgb), 0.3); /* Subtle separator */
-    text-align: left; /* Or adjust as needed */
+    border-top: 1px dashed rgba(var(--accent-rgb), 0.3);
+    text-align: left;
 }
 
 /* Contact Info */
@@ -2459,7 +2454,7 @@ body.maintenance-active {
     border: 1px solid var(--border-color);
 }
 
-.day-hours-group label { /* Applies to both day label and checkbox label */
+.day-hours-group label {
     display: block;
     margin-bottom: 10px;
     font-weight: 500;
@@ -2473,28 +2468,30 @@ body.maintenance-active {
 }
 
 .day-hours-group input[type="time"] {
-    flex-grow: 1; /* Allow inputs to grow */
-    min-width: 100px; /* Ensure they don't get too small */
+    flex-grow: 1;
+    min-width: 100px;
 }
 
 .day-hours-group .form-group.checkbox-group {
-    margin-top: 15px; /* Add space above checkbox */
-    display: flex; /* Align checkbox and label */
+    margin-top: 15px;
+    display: flex;
     align-items: center;
     gap: 8px;
 }
+
 .day-hours-group .form-group.checkbox-group label {
-    margin-bottom: 0; /* Reset margin for checkbox label */
-    font-weight: normal; /* Normal weight for checkbox label */
-}
-.day-hours-group .form-group.checkbox-group input[type="checkbox"] {
-     margin-top: 0; /* Adjust alignment if needed */
+    margin-bottom: 0;
+    font-weight: normal;
 }
 
-.special-hours-list { /* Container for holiday/temp entry forms in Admin */
+.day-hours-group .form-group.checkbox-group input[type="checkbox"] {
+    margin-top: 0;
+}
+
+.special-hours-list {
     margin-bottom: 20px;
-    display: grid; /* Use grid for better alignment */
-    gap: 15px; /* Space between entries */
+    display: grid;
+    gap: 15px;
 }
 
 .special-hours-list .hour-entry {
@@ -2502,39 +2499,39 @@ body.maintenance-active {
     padding: 20px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
-    /* Removed margin-bottom as gap is handled by grid */
     position: relative;
-    display: grid; /* Use grid for inner layout */
-    grid-template-columns: 1fr 1fr; /* Adjust columns as needed */
-    gap: 15px 20px; /* Row and column gap */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
     align-items: center;
 }
-/* Make specific fields span full width if needed */
-.special-hours-list .hour-entry .form-group:has(label[for*="-label-"]) { /* Target label group */
-    grid-column: 1 / -1; /* Span full width */
-}
-.special-hours-list .hour-entry .time-inputs {
-    grid-column: 1 / -1; /* Span full width */
-     margin: 5px 0; /* Adjust margin */
-}
-.special-hours-list .hour-entry .checkbox-group {
-     grid-column: 1 / -1; /* Span full width */
-      margin-top: 5px; /* Adjust margin */
+
+.special-hours-list .hour-entry .form-group:has(label[for*="-label-"]) {
+    grid-column: 1 / -1;
 }
 
+.special-hours-list .hour-entry .time-inputs {
+    grid-column: 1 / -1;
+    margin: 5px 0;
+}
+
+.special-hours-list .hour-entry .checkbox-group {
+    grid-column: 1 / -1;
+    margin-top: 5px;
+}
 
 .special-hours-list .hour-entry .remove-hour-button {
     position: absolute;
-    top: 8px; /* Adjust position */
-    right: 8px; /* Adjust position */
+    top: 8px;
+    right: 8px;
     background: none;
     border: none;
     color: var(--color-danger);
     cursor: pointer;
     padding: 5px;
-    font-size: 1.3em; /* Slightly larger */
-    line-height: 1; /* Ensure tight bounding box */
-    opacity: 0.6; /* Less intrusive */
+    font-size: 1.3em;
+    line-height: 1;
+    opacity: 0.6;
     transition: opacity 0.2s;
 }
 
@@ -2544,14 +2541,15 @@ body.maintenance-active {
 
 /* --- Admin Preview Styles --- */
 .admin-preview-container {
-    background: var(--bg-color); /* Consistent background */
+    background: var(--bg-color);
     padding: 25px;
     border-radius: 12px;
     margin-top: 30px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05); /* Subtle shadow */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
-.admin-preview-container h3 { /* Style the "Live Preview" heading */
+
+.admin-preview-container h3 {
     margin-top: 0;
     margin-bottom: 20px;
     padding-bottom: 10px;
@@ -2560,31 +2558,27 @@ body.maintenance-active {
     color: var(--accent-color);
 }
 
-
 .preview-content {
-    margin-top: 15px; /* Reduced top margin */
+    margin-top: 15px;
 }
 
-#admin-preview-status { /* Reuse public status styles */
+#admin-preview-status {
     margin-bottom: 20px;
     font-size: 1.2em;
     font-weight: 500;
 }
 
-/* Reuse public hours list styles for preview consistency */
 #admin-preview-hours ul {
     list-style: none;
     padding: 0;
-    margin: 0 0 15px 0; /* Add bottom margin */
+    margin: 0 0 15px 0;
 }
 
 #admin-preview-hours li {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 8px 0; /* Consistent padding */
+    padding: 8px 0;
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.95em;
 }
 
 #admin-preview-hours li:last-child {
@@ -2592,130 +2586,47 @@ body.maintenance-active {
 }
 
 #admin-preview-hours li strong {
-     flex-basis: 120px;
-     flex-shrink: 0;
-     margin-right: 10px;
+    font-weight: 600;
 }
 
 #admin-preview-hours li span {
-    color: var(--secondary-text);
-    text-align: right;
+    color: var(--text-color);
 }
 
-/* Highlight current day in preview */
-#admin-preview-hours .current-day-preview {
-    font-weight: 600;
-    background: rgba(var(--accent-rgb), 0.08);
-    margin: -5px -10px;
-    padding: 8px 10px; /* Adjusted padding */
-    border-radius: 8px;
-    border-bottom: 1px solid transparent;
-}
-#admin-preview-hours .current-day-preview:last-child{
-     border-bottom: 1px solid transparent;
+/* ======================================== */
+/* == Transitions & UX Enhancements == */
+/* ======================================== */
+
+.status-main-text {
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-#admin-preview-hours .current-day-preview strong,
-#admin-preview-hours .current-day-preview span {
-    color: var(--accent-color);
+.status-main-text.status-open,
+.status-main-text.status-closed,
+.status-main-text.status-unavailable {
+    transform: scale(1.02);
 }
 
-/* Style preview special hours */
-#admin-preview-hours h4 {
-    font-size: 1em;
-    margin-top: 15px;
-    margin-bottom: 8px;
-    color: var(--accent-color);
-}
-
-#admin-preview-hours .special-hours-preview li {
-    font-size: 0.9em;
-    background: rgba(var(--accent-rgb), 0.03); /* Very subtle background */
-    padding: 8px 10px;
-    border-radius: 4px;
-     border-bottom: 1px solid var(--border-color); /* Keep border consistent */
-}
-#admin-preview-hours .special-hours-preview li:last-child {
-     border-bottom: none;
-}
-#admin-preview-hours .special-hours-preview strong {
-    flex-basis: auto; /* Allow label to take space */
-}
-
-#admin-preview-hours .special-hours-preview .special-hours-details {
-     display: flex;
-     flex-direction: column; /* Stack date and hours */
-     align-items: flex-end; /* Align text to the right */
-     font-size: 0.95em;
-     gap: 2px;
-}
-#admin-preview-hours .special-hours-preview .dates {
-    font-style: italic;
-     color: var(--secondary-text);
-}
-#admin-preview-hours .special-hours-preview .hours {
-    font-weight: 500;
-}
-
-
-/* Preview timezone note */
-#admin-preview-hours .preview-timezone-note {
-    margin-top: 15px;
-    font-size: 0.85em;
-    color: var(--secondary-text);
-    font-style: italic;
-    text-align: center;
-}
-
-/* Preview Contact Info */
-#admin-preview-contact {
-     margin-top: 15px;
-     padding-top: 15px;
-     border-top: 1px solid var(--border-color);
-     font-size: 0.9em;
-     text-align: center;
-}
-#admin-preview-contact a {
-    color: var(--link-color);
-}
-
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .hours-grid {
-        grid-template-columns: 1fr;
+/* Mobile tweaks */
+@media (max-width: 480px) {
+    .hours-list li {
+        flex-direction: column;
+        align-items: flex-start;
     }
-
-    .special-hours-list .hour-entry {
-        padding: 15px;
-        grid-template-columns: 1fr; /* Stack fields on smaller screens */
+    .hours-list li strong {
+        flex-basis: auto;
+        margin-bottom: 4px;
     }
-     .special-hours-list .hour-entry .form-group,
-     .special-hours-list .hour-entry .time-inputs,
-     .special-hours-list .hour-entry .checkbox-group {
-        grid-column: 1 / -1; /* Ensure they take full width */
-    }
+}
 
-     .hours-list li,
-     #admin-preview-hours li {
-         flex-direction: column; /* Stack day and time */
-         align-items: flex-start; /* Align text left */
-     }
-      .hours-list li strong,
-     #admin-preview-hours li strong {
-         flex-basis: auto; /* Reset basis */
-         margin-bottom: 4px; /* Add space below day name */
-     }
-      .hours-list li span,
-     #admin-preview-hours li span {
-         text-align: left;
-     }
-      #admin-preview-hours .special-hours-preview li {
-         align-items: flex-start;
-     }
-       #admin-preview-hours .special-hours-preview .special-hours-details {
-         align-items: flex-start; /* Align left */
-         width: 100%; /* Take full width */
-     }
+/* Highlight current day more dramatically */
+.hours-list li.current-day {
+    border-left: 4px solid var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.15);
+}
 
+/* Admin UX: Closed days disabled style */
+.day-hours-group.closed {
+    opacity: 0.6;
+    pointer-events: none;
 }
