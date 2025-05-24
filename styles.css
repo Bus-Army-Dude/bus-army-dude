@@ -2432,7 +2432,8 @@ body.maintenance-active {
     text-decoration: none;
 }
 
-.contact-info a:hover {
+.contact-info a:hover,
+.contact-info a:focus {
     text-decoration: underline;
 }
 
@@ -2629,4 +2630,28 @@ body.maintenance-active {
 .day-hours-group.closed {
     opacity: 0.6;
     pointer-events: none;
+}
+
+/* ================================ */
+/* == Remove all hover effects except contact email == */
+/* ================================ */
+
+.hours-list li:hover,
+.special-hours-display li:hover,
+.day-hours-group:hover,
+.special-hours-list .hour-entry:hover {
+    box-shadow: none !important;
+    background: inherit !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+/* Keep hover on contact links */
+.contact-info a:hover,
+.contact-info a:focus {
+    text-decoration: underline;
+    border-bottom-color: var(--accent-color);
+    color: var(--accent-color);
+    outline: none;
 }
