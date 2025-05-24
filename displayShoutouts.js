@@ -1044,50 +1044,50 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 let tempCountdownStr = "";
                 const tempStartLuxonDate = DateTime.fromISO(temp.startDate, { zone: assumedBusinessTimezone }).startOf('day');
                 const startOfTodayInBiz = nowInBizTZLuxon.startOf('day');
-
-                if (businessDateStr >= temp.startDate && businessDateStr <= temp.endDate) { 
+        
+                // Check if the temporary schedule is for today, tomorrow, or future
+                if (businessDateStr === temp.startDate) {
+                    // Today's temporary schedule
                     if (temp.isClosed) {
                         tempCountdownStr = `Closed Today (Temporary: ${temp.label || 'Event'})`;
                     } else if (temp.open && temp.close) {
                         const tempOpenMinutesNum = timeStringToMinutes(temp.open);
-                        const tempCloseMinutesNum = timeStringToMinutes(temp.close);
-
-                        if (tempOpenMinutesNum !== null && tempCloseMinutesNum !== null) {
-                            const tempOpenTimeToday = nowInBizTZLuxon.set({ hour: Math.floor(tempOpenMinutesNum / 60), minute: tempOpenMinutesNum % 60, second: 0, millisecond: 0 });
-                            const tempCloseTimeToday = nowInBizTZLuxon.set({ hour: Math.floor(tempCloseMinutesNum / 60), minute: tempCloseMinutesNum % 60, second: 0, millisecond: 0 });
-
-                            if (nowInBizTZLuxon < tempOpenTimeToday) {
-                                const durationToOpen = tempOpenTimeToday.diff(nowInBizTZLuxon);
-                                const minutesToOpen = Math.floor(durationToOpen.as('minutes'));
-                                if (minutesToOpen <= COUNTDOWN_WINDOW_MINUTES && minutesToOpen > 0) {
-                                    const h = Math.floor(minutesToOpen / 60); const m = minutesToOpen % 60;
-                                    if (h > 0) tempCountdownStr = `Starts (temp.) in ${h} hr ${m} min`;
-                                    else tempCountdownStr = `Starts (temp.) in ${m} min`;
-                                } else if (minutesToOpen > COUNTDOWN_WINDOW_MINUTES) {
-                                    tempCountdownStr = `Today at ${formatDisplayTimeBI(temp.open, visitorTimezone)}`;
-                                } else { tempCountdownStr = `Starting (temp.) very soon`; }
-                            } else if (nowInBizTZLuxon >= tempOpenTimeToday && nowInBizTZLuxon < tempCloseTimeToday) {
-                                const durationToClose = tempCloseTimeToday.diff(nowInBizTZLuxon);
-                                const minutesToClose = Math.floor(durationToClose.as('minutes'));
-                                if (minutesToClose <= COUNTDOWN_WINDOW_MINUTES && minutesToClose > 0) {
-                                    const h = Math.floor(minutesToClose / 60); const m = minutesToClose % 60;
-                                    if (h > 0) tempCountdownStr = `Ends (temp.) in ${h} hr ${m} min`;
-                                    else tempCountdownStr = `Ends (temp.) in ${m} min`;
-                                } else if (minutesToClose > COUNTDOWN_WINDOW_MINUTES) {
-                                    tempCountdownStr = `Active until ${formatDisplayTimeBI(temp.close, visitorTimezone)}`;
-                                } else { tempCountdownStr = `Ending (temp.) very soon`; }
-                            } else { 
-                                tempCountdownStr = `Ended (temp.) for today`;
+                        if (tempOpenMinutesNum !== null) {
+                            const tempOpenTimeToday = formatDisplayTimeBI(temp.open, visitorTimezone);
+                            const currentMinutes = nowInBizTZLuxon.hour * 60 + nowInBizTZLuxon.minute;
+                            
+                            if (tempOpenMinutesNum > currentMinutes) {
+                                tempCountdownStr = `Today at ${tempOpenTimeToday}`;
+                            } else {
+                                tempCountdownStr = `Active Today until ${formatDisplayTimeBI(temp.close, visitorTimezone)}`;
                             }
-                        } else {  tempCountdownStr = "Invalid temporary hours timing"; }
-                    } else { 
-                        tempCountdownStr = `Temporary Schedule Active (${temp.label || 'Event'})`;
+                        }
                     }
-                } 
-                else if (nowInBizTZLuxon < tempStartLuxonDate) { 
+                } else {
+                    // Check if it's tomorrow or future date
                     const diffInCalendarDays = Math.ceil(tempStartLuxonDate.diff(startOfTodayInBiz, 'days').days);
-                    if (diffInCalendarDays >= 2) tempCountdownStr = `Upcoming in ${diffInCalendarDays} days`;
-                    else if (diffInCalendarDays === 1) tempCountdownStr = `Upcoming tomorrow`;
+                    
+                    if (diffInCalendarDays === 1) {
+                        // Tomorrow's schedule
+                        if (temp.isClosed) {
+                            tempCountdownStr = "Closed Tomorrow";
+                        } else if (temp.open) {
+                            tempCountdownStr = `Tomorrow at ${formatDisplayTimeBI(temp.open, visitorTimezone)}`;
+                        }
+                    } else if (diffInCalendarDays > 1) {
+                        // Future date
+                        if (diffInCalendarDays <= 7) {
+                            // If within a week, show the day name
+                            const futureDate = tempStartLuxonDate.toFormat('cccc');
+                            tempCountdownStr = `Upcoming on ${futureDate} (in ${diffInCalendarDays} days)`;
+                        } else {
+                            tempCountdownStr = `Upcoming in ${diffInCalendarDays} days`;
+                        }
+                        
+                        if (!temp.isClosed && temp.open) {
+                            tempCountdownStr += ` at ${formatDisplayTimeBI(temp.open, visitorTimezone)}`;
+                        }
+                    }
                 }
                 
                 tempHoursHtml += `
